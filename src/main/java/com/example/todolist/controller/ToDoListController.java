@@ -14,9 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping ("/todolist")
 public class ToDoListController {
-    @Autowired
     private TaskService taskService;
 
+    public ToDoListController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @PostMapping("/add")
     public String Add(@RequestBody Task task) {

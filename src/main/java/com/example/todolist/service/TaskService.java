@@ -3,20 +3,20 @@ package com.example.todolist.service;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.entity.Task;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 
 @Service
 public class TaskService {
-    TaskRepository taskRepository;
+
+    private TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    public TaskService() {
-    }
 
     @Transactional
     public long addTask(Task task) {
