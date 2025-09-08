@@ -1,18 +1,15 @@
 package com.example.todolist.controller;
 
-import com.example.todolist.entity.Task;
-import com.example.todolist.repository.TaskRepository;
+import com.example.todolist.dto.TaskDTO;
 import com.example.todolist.service.TaskService;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-@RequestMapping ("/todolist")
+@RequestMapping ("api/todolist")
 public class ToDoListController {
     private TaskService taskService;
 
@@ -21,17 +18,16 @@ public class ToDoListController {
     }
 
     @PostMapping("/add")
-    public String Add(@RequestBody Task task) {
-        try {
-            taskService.getTaskById(taskService.addTask(task));
-        } catch (Exception e) {
-            return "Cannot add task: " + e.getMessage();
-        }
-        return "Task added";
+    public String Add(@RequestBody TaskDTO task) {
+            Optional<TaskDTO> returnTask = taskService.addTask(task);
+            if (returnTask.isEmpty()) {
+                return "Cannot add task";
+            }
+            return "Task added successfully";
     }
 
     @GetMapping("/get")
-    public List<Task> getAll() {
+    public List<TaskDTO> getAll() {
         return taskService.getAll();
     }
 
