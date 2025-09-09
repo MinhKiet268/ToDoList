@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TaskDTO {
     private Long id;
-    private String username;
-    private String password;
-    private String imageUrl;
-    private String email;
-    private String Gender;
+    private String name;
+    private String description;
+    private String priority;
 }

@@ -22,13 +22,13 @@ public class AuthService {
     
     public Optional<UserDTO> findById(long id) {
         UserEntity user = userRepository.findById(id).orElse(null);
-        return userMapper.toDto(user);
+        return Optional.of(userMapper.toDto(user));
     }
 
     public Optional<UserDTO> save(UserDTO userDTO) {
         UserEntity userEntity = userMapper.toEntity(userDTO);
         userEntity = userRepository.save(userEntity);
-        return userMapper.toDto(userEntity);
+        return Optional.of(userMapper.toDto(userEntity));
     }
 
 }

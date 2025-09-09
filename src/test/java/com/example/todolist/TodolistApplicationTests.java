@@ -8,6 +8,7 @@ class TodolistApplicationTests {
 
 	@Test
 	void contextLoads() {
+        System.out.println("Context Loads Successfully");
 	}
 
 }
