@@ -1,18 +1,32 @@
-package com.example.todolist.dto;
+package com.example.todolist.dtoResponse;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+@Getter
+@Setter
+public class UserResponse {
+
     private Long id;
+
     private String username;
+
     private String password;
+
+    private String fullName;
+
     private String imageUrl;
+
     private String email;
-    private String Gender;
+
+    private String gender;
+
+
+
 }

@@ -1,6 +1,6 @@
 package com.example.todolist.mapper;
 
-import com.example.todolist.dto.TaskDTO;
+import com.example.todolist.dtoResponse.TaskDTO;
 import com.example.todolist.entity.TaskEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

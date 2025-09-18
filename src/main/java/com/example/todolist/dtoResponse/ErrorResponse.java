@@ -1,11 +1,22 @@
-package com.example.todolist.dto;
+package com.example.todolist.dtoResponse;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErrorResponse {
-    private final LocalDateTime timestamp;
-    private final String message;
-    private final String path;
+
+    private LocalDateTime timestamp;
+    private String message;
+    private String path;
 
     public ErrorResponse(String message, String path) {
         this.timestamp = LocalDateTime.now();

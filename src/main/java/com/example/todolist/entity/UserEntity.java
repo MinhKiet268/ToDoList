@@ -1,28 +1,100 @@
 package com.example.todolist.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.context.annotation.Scope;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Scope("prototype")
-public class UserEntity {
+@Setter
+@Getter
+@Table(name = "users")
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String fullName;
+
     private String imageUrl;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String Gender;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch =  FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>(); // 0: user, 1: admin
 
 
+//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+//    @JoinTable(
+//            name = "user_tasks",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "task_id")
+//    )
+//    private Set<TaskEntity> tasks;
+
+    @Column(nullable = false)
+    private boolean isEnable = true;
+
+
+    @Column(nullable = false)
+    private boolean isNotLocked = true;
+
+    @Column(nullable = false)
+    private boolean isAccountNonLocked = true;
+
+    @Column(nullable = false)
+    private boolean isCredentialsNonExpired = true;
+
+    @Column(nullable = false)
+    private boolean isAccountNonExpired = true;
+
+    // UserDetails interface methods
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnable;
+    }
 }

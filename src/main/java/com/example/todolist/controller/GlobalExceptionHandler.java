@@ -1,37 +1,78 @@
 package com.example.todolist.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.example.todolist.dtoResponse.ErrorDetail;
+import com.example.todolist.dtoResponse.ErrorResponse;
+import com.example.todolist.dtoResponse.ValidationErrorResponse;
+import com.example.todolist.exception.AlreadyExistException;
+import com.example.todolist.exception.InvalidInputException;
+import com.example.todolist.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.time.LocalDateTime;
+import org.springframework.web.context.request.WebRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    public static class ErrorResponse {
-        private final LocalDateTime timestamp;
-        private final String message;
-        private final String path;
 
-        public ErrorResponse(String message, String path) {
-            this.timestamp = LocalDateTime.now();
-            this.message = message;
-            this.path = path;
-        }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
 
-        // Getters for serialization
-        public LocalDateTime getTimestamp() {
-            return timestamp;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getPath() {
-            return path;
-        }
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ErrorResponse> handleInValidException(
+            InvalidInputException ex, WebRequest request) {
+
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public  ResponseEntity<ErrorResponse> handleAlreadyExistException(AlreadyExistException ex, WebRequest request) {
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class) // Handle validation errors of the @Valid annotation for the @NotBlank in the DTO
+    public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+
+        List<ErrorDetail> errors = new ArrayList<>();
+        BindingResult result = ex.getBindingResult();
+
+        // Iterate through all field errors and create a detailed error object for each
+        for (FieldError error : result.getFieldErrors()) {
+            errors.add(new ErrorDetail(
+                    error.getField(),
+                    error.getCode(), // Get the validation annotation code (e.g., NotBlank, Email)
+                    error.getDefaultMessage()
+            ));
+        }
+
+        ValidationErrorResponse response = new ValidationErrorResponse("BAD_REQUEST", errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 
 }

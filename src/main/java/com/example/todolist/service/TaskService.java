@@ -1,12 +1,15 @@
 package com.example.todolist.service;
 
-import com.example.todolist.dto.TaskDTO;
+import com.example.todolist.dtoResponse.TaskDTO;
 import com.example.todolist.entity.TaskEntity;
+import com.example.todolist.exception.ResourceNotFoundException;
 import com.example.todolist.mapper.TaskMapper;
 import com.example.todolist.repository.TaskRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.Task;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +17,10 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class TaskService{
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
     private TaskMapper taskMapper;
@@ -26,11 +29,15 @@ public class TaskService{
     @Transactional
     public Optional<TaskDTO> addTask(TaskDTO task) {
         TaskEntity savedTask = taskRepository.save(taskMapper.toEntityNoId(task));
-        return Optional.of(taskMapper.toDto(savedTask));
+        if(savedTask != null) {
+            return Optional.of(taskMapper.toDto(savedTask));
+        }else {
+            throw new ResourceNotFoundException("Task could not be added");
+        }
     }
 
     @Transactional
-    public Optional<TaskDTO> updateTask(com.example.todolist.dto.TaskDTO task) {
+    public Optional<TaskDTO> updateTask(TaskDTO task) {
         TaskEntity savedTask = taskRepository.save(taskMapper.toEntity(task));
         return Optional.of(taskMapper.toDto(savedTask));
     }
@@ -55,5 +62,6 @@ public class TaskService{
     public void deleteAllTasks() {
         taskRepository.deleteAll();
     }
+
 
 }

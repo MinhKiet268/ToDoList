@@ -1,0 +1,31 @@
+package com.example.todolist.dtoRequest;
+
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserCreationRequestDTO {
+
+    @NotBlank(message = "Username is mandatory")
+    private String username;
+    @NotBlank(message = "Password is mandatory")
+    private String password;
+
+    @NotBlank(message = "Fullname is mandatory")
+    private String fullName;
+
+    private String imageUrl;
+
+    @NotBlank(message = "Email is mandatory")
+    private String email;
+
+    @NotBlank(message = "Gender is mandatory")
+    private String gender;
+
+
+}

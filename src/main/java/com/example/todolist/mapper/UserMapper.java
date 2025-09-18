@@ -1,23 +1,24 @@
 package com.example.todolist.mapper;
 
 
-import com.example.todolist.dto.UserDTO;
+import com.example.todolist.dtoRequest.UserCreationRequestDTO;
+import com.example.todolist.dtoResponse.UserResponse;
 import com.example.todolist.entity.UserEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
     //@Mapping(target = "id", ignore = true)
-    UserEntity toEntity(UserDTO userDTO);
+    UserEntity toEntity(UserCreationRequestDTO userCreationRequestDTO);
 
+    UserEntity toEntity(UserResponse userResponse);
 
-    List<UserEntity> toEntity(List<UserDTO> users);
+    List<UserEntity> toEntity(List<UserCreationRequestDTO> users);
 
-    UserDTO toDto(UserEntity user);
+    UserCreationRequestDTO toDto(UserEntity user);
+
+    UserResponse toResponseDto(UserEntity user);
 }
