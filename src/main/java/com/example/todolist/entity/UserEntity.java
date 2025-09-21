@@ -47,13 +47,8 @@ public class UserEntity implements UserDetails {
     private Set<RoleEntity> roles = new HashSet<>(); // 0: user, 1: admin
 
 
-//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
-//    @JoinTable(
-//            name = "user_tasks",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task_id")
-//    )
-//    private Set<TaskEntity> tasks;
+    @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+    private Set<TaskEntity> tasks;
 
     @Column(nullable = false)
     private boolean isEnable = true;
@@ -78,6 +73,8 @@ public class UserEntity implements UserDetails {
         return roles;
     }
 
+    public Set<RoleEntity> getTasks() {return roles;}
+
     @Override
     public boolean isAccountNonExpired() {
         return isAccountNonExpired;
@@ -96,5 +93,9 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnable;
+    }
+
+    public UserEntity (String username) {
+        this.username = username;
     }
 }

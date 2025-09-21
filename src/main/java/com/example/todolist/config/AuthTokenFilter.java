@@ -1,17 +1,15 @@
 package com.example.todolist.config;
 
 
+import com.example.todolist.entity.UserEntity;
 import com.example.todolist.service.CustomUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,12 +30,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try{
             String jwt = parseJwt(request);
             if(jwt != null && jwtUtil.validateToken(jwt)){
-                String username = jwtUtil.getUsernameFromToken(jwt);
-                UserDetails userDetails = customUserService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); // Create authentication token
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        new UserEntity(jwtUtil.getUsernameFromToken(jwt))
+                        , null
+                        , jwtUtil.getAuthoritiesFromToken(jwt)); // Create authentication token
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // adding more details to the authentication object, not mandatory but good to have to track and prevent fraud
                 SecurityContextHolder.getContext().setAuthentication(authentication); // setting the authentication in the context, so that later spring security can use it to authorize requests this only lasts for a single request
+                // SecurityContext will hold the userdetail and can be access by entire app and authorize the user role
+                // SecurityContext only hold one userdetails, if you do multiple authenticate it will be overwrited
             }
         } catch (Exception e) {
             System.out.println("Cannot set user authentication: " + e);

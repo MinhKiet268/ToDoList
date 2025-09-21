@@ -17,7 +17,6 @@ public class TaskEntity {
     private String name;
     private String description;
     private String priority;
-    private String role;
     private String status;
 
 //    @ManyToOne(fetch = FetchType.LAZY)

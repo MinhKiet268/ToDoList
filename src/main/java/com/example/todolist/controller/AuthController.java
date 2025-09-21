@@ -5,6 +5,7 @@ import com.example.todolist.config.JwtUtil;
 import com.example.todolist.dtoRequest.UserCreationRequestDTO;
 import com.example.todolist.dtoRequest.UserLoginDTO;
 import com.example.todolist.dtoResponse.UserResponse;
+import com.example.todolist.entity.UserEntity;
 import com.example.todolist.service.CustomUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class AuthController {
 
     @PostMapping("/signin")
     public String authenticateUser(@Valid @RequestBody UserLoginDTO user) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getUsername())); // this will authenticate the user, if not matching then will throw AuthenticationException
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtUtil.generateToken(userDetails.getUsername());
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())); // this will authenticate the user, if not matching then will throw AuthenticationException
+        UserEntity userDetails = (UserEntity) authentication.getPrincipal();
+        return jwtUtil.generateToken(userDetails);
     }
 
 //    @PostMapping("/signout")

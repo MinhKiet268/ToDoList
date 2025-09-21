@@ -27,14 +27,11 @@ public class CustomUserService implements UserDetailsService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserEntity loadUserByUsername(String username) {
         System.out.printf("Loading user by username: %s%n", username);
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow( () -> new ResourceNotFoundException("User not found with username: " + username));
-
-        return new User(user.getUsername()
-                , passwordEncoder.encode(user.getPassword())
-                , user.getAuthorities());
+        return user;
     }
 
 
