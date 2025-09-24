@@ -2,6 +2,7 @@ package com.example.todolist.service;
 
 import com.example.todolist.dtoResponse.TaskDTO;
 import com.example.todolist.entity.TaskEntity;
+import com.example.todolist.entity.UserEntity;
 import com.example.todolist.exception.ResourceNotFoundException;
 import com.example.todolist.mapper.TaskMapper;
 import com.example.todolist.repository.TaskRepository;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.Task;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,12 @@ public class TaskService{
         return Optional.of(taskMapper.toDto(savedTask));
     }
 
+    public List<TaskDTO> getTaskByUserId() {
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<TaskEntity> savedTask = taskRepository.findByUserId(user.getId());
+        return taskMapper.toDtos(savedTask);
+    }
+
     public List<TaskDTO> getAll() {
         List<TaskEntity> tasks = taskRepository.findAll();
         List<TaskDTO> dtos = taskMapper.toDtos(tasks);
@@ -63,5 +71,8 @@ public class TaskService{
         taskRepository.deleteAll();
     }
 
+    public UserEntity getUserIdFromContext() {
+        return (UserEntity) org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
 }

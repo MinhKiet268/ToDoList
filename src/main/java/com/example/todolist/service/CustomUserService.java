@@ -40,6 +40,7 @@ public class CustomUserService implements UserDetailsService {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new AlreadyExistException("Username already exists");
         }
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         UserEntity user = userRepository.save(userMapper.toEntity(userDTO));
         // Encode the password before saving
         return userMapper.toResponseDto(user);

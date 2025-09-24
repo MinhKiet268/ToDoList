@@ -19,8 +19,11 @@ public class TaskEntity {
     private String priority;
     private String status;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private UserEntity owner;
+    // A many-to-one relationship back to the UserEntity
+    // This is the owning side, which has the foreign key.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
 
 }

@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public String authenticateUser(@Valid @RequestBody UserLoginDTO user) {
+        // You only need to put in the username and raw password, the authentication manager will call the loadUserByUsername method and also using the password encoder to match the password
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())); // this will authenticate the user, if not matching then will throw AuthenticationException
         UserEntity userDetails = (UserEntity) authentication.getPrincipal();
         return jwtUtil.generateToken(userDetails);
@@ -43,7 +44,6 @@ public class AuthController {
 //    public ResponseBody<UserResponse> login(@Valid @RequestBody UserLoginDTO user) {
 //        return null;
 //    }
-
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody UserCreationRequestDTO user) {

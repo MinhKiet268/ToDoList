@@ -30,8 +30,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try{
             String jwt = parseJwt(request);
             if(jwt != null && jwtUtil.validateToken(jwt)){
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        new UserEntity(jwtUtil.getUsernameFromToken(jwt))
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken( // with this constructor the isAuthenticated() will be set to true
+                        new UserEntity(jwtUtil.getUserIdFromToken(jwt), jwtUtil.getUsernameFromToken(jwt))
                         , null
                         , jwtUtil.getAuthoritiesFromToken(jwt)); // Create authentication token
 

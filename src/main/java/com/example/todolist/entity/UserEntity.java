@@ -48,6 +48,7 @@ public class UserEntity implements UserDetails {
 
 
     @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Set<TaskEntity> tasks;
 
     @Column(nullable = false)
@@ -95,7 +96,8 @@ public class UserEntity implements UserDetails {
         return isEnable;
     }
 
-    public UserEntity (String username) {
+    public UserEntity (Long id, String username) {
+        this.id = id;
         this.username = username;
     }
 }

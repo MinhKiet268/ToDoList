@@ -65,6 +65,12 @@ public class JwtUtil {
         return roles.stream().collect(Collectors.toSet());
     }
 
+    public long getUserIdFromToken(String token) {
+        return Long.parseLong(getClaimsFromToken(token).getSubject());
+    }
+
+
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build()
