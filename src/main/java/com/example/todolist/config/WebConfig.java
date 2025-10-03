@@ -2,6 +2,7 @@ package com.example.todolist.config;
 
 import com.example.todolist.entity.UserEntity;
 import com.example.todolist.service.CustomUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 
@@ -53,7 +56,7 @@ public class WebConfig {
                         .anyRequest().authenticated()                         // other request is not /api/auth/** must be authenticated to access
                 )
                 .csrf(AbstractHttpConfigurer::disable) // disable Cross-Site Request Forgery
-                //.cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // enable CORS with custom configuration
                 .userDetailsService(customUserService) // you can add this in if you have more than one class that implements UserDetailsService, if you have only one of it then spring will automatic autowire it for the AuthenticationManager for you
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 //                .httpBasic(Customizer.withDefaults());
@@ -61,6 +64,25 @@ public class WebConfig {
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class); // add the perRequestFilter
         return http.build();
     }
+
+
+// CORS configuration can be added here if needed
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        return new CorsConfigurationSource() {
+            @Override
+            public org.springframework.web.cors.CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+                config.setAllowedOrigins(Arrays.asList("http://localhost:8080")); // allow only this origin to access the API
+                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(Arrays.asList("*")); // allow all headers
+                config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                config.setAllowCredentials(true);
+                return config;
+            };
+        };
+    }
+
 
 //    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration auth) throws Exception {
 //        auth.getAuthenticationManager().
