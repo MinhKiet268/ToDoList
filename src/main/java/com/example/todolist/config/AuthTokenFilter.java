@@ -5,9 +5,12 @@ import com.example.todolist.entity.UserEntity;
 import com.example.todolist.service.CustomUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,18 +20,23 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    @Value("${cookie.accesstoken.name}")
+    private String accessTokenName;
 
-    @Autowired
-    private CustomUserService customUserService;
+    private final JwtUtil jwtUtil;
+
+    private final CookieUtil cookieUtil;
+
+    private final CustomUserService customUserService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
-            String jwt = parseJwt(request);
+            String jwt = cookieUtil.getCookieFromRequest(request, accessTokenName); // because we store the JWT in a cookie
+            // String jwt = parseJwt(request); // if you store the JWT in the Authorization header
             if(jwt != null && jwtUtil.validateToken(jwt)){
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken( // with this constructor the isAuthenticated() will be set to true
                         new UserEntity(jwtUtil.getUserIdFromToken(jwt), jwtUtil.getUsernameFromToken(jwt))
@@ -41,6 +49,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 // SecurityContext only hold one userdetails, if you do multiple authenticate it will be overwrited
             }
         } catch (Exception e) {
+
             System.out.println("Cannot set user authentication: " + e);
         }
         filterChain.doFilter(request, response); // continue the filter chain regardless of whether authentication was

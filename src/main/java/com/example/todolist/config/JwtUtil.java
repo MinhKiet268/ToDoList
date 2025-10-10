@@ -6,17 +6,10 @@ import com.example.todolist.entity.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Component
@@ -65,11 +58,10 @@ public class JwtUtil {
         return roles.stream().collect(Collectors.toSet());
     }
 
+
     public long getUserIdFromToken(String token) {
         return Long.parseLong(getClaimsFromToken(token).getSubject());
     }
-
-
 
     public boolean validateToken(String token) {
         try {
@@ -89,5 +81,6 @@ public class JwtUtil {
         }
         return false;
     }
+
 
 }

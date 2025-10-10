@@ -1,6 +1,6 @@
 import Header from "./Header.jsx";
 
-const TaskContainer = () => {
+const TaskContainer = (props) => {
     return (
         <div className="flex flex-col flex-1">
             <Header></Header>

@@ -1,6 +1,5 @@
 package com.example.todolist.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -50,6 +50,10 @@ public class UserEntity implements UserDetails {
     @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Set<TaskEntity> tasks;
+
+    @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Set<RefreshToken> refreshToken;
 
     @Column(nullable = false)
     private boolean isEnable = true;

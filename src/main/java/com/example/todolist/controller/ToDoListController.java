@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping ("api/todolist")
+@RequestMapping ("api/app")
 @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')") // you can use hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') if your roles are prefixed with 'ROLE_'
 public class ToDoListController {
     private TaskService taskService;

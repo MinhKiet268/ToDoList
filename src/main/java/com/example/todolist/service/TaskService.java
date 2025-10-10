@@ -9,9 +9,7 @@ import com.example.todolist.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

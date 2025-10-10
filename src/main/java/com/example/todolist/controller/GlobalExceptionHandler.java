@@ -3,9 +3,7 @@ package com.example.todolist.controller;
 import com.example.todolist.dtoResponse.ErrorDetail;
 import com.example.todolist.dtoResponse.ErrorResponse;
 import com.example.todolist.dtoResponse.ValidationErrorResponse;
-import com.example.todolist.exception.AlreadyExistException;
-import com.example.todolist.exception.InvalidInputException;
-import com.example.todolist.exception.ResourceNotFoundException;
+import com.example.todolist.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -72,7 +70,28 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CookieNameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCookieTokenNotFoundException(
+            CookieNameNotFoundException ex, WebRequest request) {
 
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
+
+
+    @ExceptionHandler(DataBaseExecutionException.class)
+    public ResponseEntity<ErrorResponse> handleDataBaseExecutionException(
+            DataBaseExecutionException ex, WebRequest request) {
+
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 }

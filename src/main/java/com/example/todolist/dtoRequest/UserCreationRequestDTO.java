@@ -3,7 +3,6 @@ package com.example.todolist.dtoRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Setter
 @Getter

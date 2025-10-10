@@ -4,6 +4,7 @@ import com.example.todolist.entity.UserEntity;
 import com.example.todolist.service.CustomUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.server.servlet.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,6 +48,10 @@ public class WebConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
+    public CookieSameSiteSupplier applicationCookieSameSiteSupplier() { // to set the SameSite attribute for cookies to Strict
+        return CookieSameSiteSupplier.ofStrict();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -3,8 +3,6 @@ package com.example.todolist.mapper;
 import com.example.todolist.dtoResponse.TaskDTO;
 import com.example.todolist.entity.TaskEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Optional;
