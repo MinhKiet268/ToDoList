@@ -25,6 +25,12 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
+    public RefreshToken findByRefreshToken(UUID refreshToken) {
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new DataBaseExecutionException("Service not found Refresh token."));
+    }
+
+    @Transactional
     public UUID createRefreshToken(UUID refreshToken, long userId, UUID deviceId) {
         // Implementation for creating a refresh token
         try {
@@ -48,23 +54,19 @@ public class RefreshTokenService {
 
     @Transactional
     public UserEntity findUserByRefreshToken(UUID refreshToken) {
-        return refreshTokenRepository.findById(refreshToken)
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new DataBaseExecutionException("Service not found Refresh token."))
                 .getUser();
     }
 
-    public RefreshToken findRefreshTokenByRefreshToken(UUID refreshToken) {
-        return refreshTokenRepository.findById(refreshToken).orElseThrow(() -> new DataBaseExecutionException("Service not found Refresh token."));
-    }
-
     public boolean isSameDevice(UUID refreshToken, UUID deviceId) {
-        RefreshToken rT = refreshTokenRepository.findById(refreshToken)
+        RefreshToken rT = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new DataBaseExecutionException("Service not found Refresh token."));
         return rT.getDeviceId() == deviceId;
     }
 
     public boolean isExpired(UUID refreshToken) {
-        Date expiryDate = refreshTokenRepository.findById(refreshToken)
+        Date expiryDate = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new DataBaseExecutionException("Service not found Refresh token."))
                 .getExpiryDate();
         if(expiryDate.before(new Date())){

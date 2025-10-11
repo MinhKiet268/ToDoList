@@ -1,7 +1,9 @@
+import {createContext} from "react";
 
 
+const errorContext = createContext(null);
 
-const PopupForm = ({props,formcase}) => {
+const ErrorProvider = ({props,formcase}) => {
 
     const responseMessage = (props) => {
         console.log("does this run at all");
@@ -40,4 +42,4 @@ const PopupForm = ({props,formcase}) => {
 
 }
 
-export default PopupForm;
+export default ErrorProvider;

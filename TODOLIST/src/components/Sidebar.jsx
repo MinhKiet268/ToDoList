@@ -1,17 +1,20 @@
 import apiClient from "../utils/apiClient.jsx";
 import { useNavigate } from 'react-router-dom';
-import {useState} from "react";
+import {useAuth} from "./AuthProvider.jsx";
 
 
 const Sidebar = () => {
     const history = useNavigate();
+    const {logout} = useAuth();
+
 
     const logoutHandler = async () => {
         try {
-            const response = await apiClient.post("/api/auth/signout");
-
-            console.log(response);
-            history("/login",{state: response.data});
+            const response = await logout();
+            console.log("logout " + response);
+            if(response){
+                history("/login",{state: response.data});
+            }
         } catch (error) {
             console.error("Logout failed: ", error.response ? error.response.data : error.message);
         }

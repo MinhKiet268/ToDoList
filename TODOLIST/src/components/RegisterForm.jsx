@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
-import PopupForm from "./PopupForm.jsx";
+import ErrorProvider from "./ErrorProvider.jsx";
 import apiClient from "../utils/apiClient.jsx";
 
 
@@ -75,7 +75,7 @@ const RegisterForm = () => {
     return (
         <div className="flex flex-1 min-h-screen justify-center items-center">
 
-            {showPopup ? <PopupForm formcase="register" props={responseMessage}/> : null}
+            {showPopup ? <ErrorProvider formcase="register" props={responseMessage}/> : null}
             <div className="flex flex-col w-full h-screen items-center p-5 bg-gray-400 sm:rounded-2xl sm:shadow-2xl space-y-5 sm:w-140 sm:h-275">
                 <h1 className="text-3xl font-audiowide mb-20"><p>Sign up</p></h1>
                 <input className="bg-gray-100 h-10 w-3/5 p-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" placeholder="Username" onChange={(e) => setUserDetail({...userDetail, username: e.target.value})}/>

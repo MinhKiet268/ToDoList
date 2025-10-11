@@ -19,7 +19,9 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
 
     void deleteByRefreshToken(UUID refreshToken);
 
-    Optional<RefreshToken> findByDeviceId(UUID refreshToken);
+    Optional<RefreshToken> findByDeviceId(UUID deviceId);
+
+    Optional<RefreshToken> findByRefreshToken(UUID refreshToken);
 
     @Modifying
     @Query (value = "UPDATE refresh_token SET refresh_token = :refreshToken, issued_at = :issuedAt, expiry_date = :expiryDate WHERE device_id = :deviceId", nativeQuery = true)
