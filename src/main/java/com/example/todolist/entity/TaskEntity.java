@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.context.annotation.Scope;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,8 +18,10 @@ public class TaskEntity {
     private long id;
     private String name;
     private String description;
-    private String priority;
+    private String subject;
     private String status;
+    private Date issueDate;
+    private Date dueDate;
 
     // A many-to-one relationship back to the UserEntity
     // This is the owning side, which has the foreign key.

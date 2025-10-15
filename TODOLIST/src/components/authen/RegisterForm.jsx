@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
-import ErrorProvider from "./ErrorProvider.jsx";
-import apiClient from "../utils/apiClient.jsx";
+import ErrorProvider from "../errorhandler/ErrorProvider.jsx";
+import apiClient from "../../utils/apiClient.jsx";
 
 
 const RegisterForm = () => {

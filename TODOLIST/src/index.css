@@ -1,6 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
 @import "tailwindcss";
+
+@font-face {
+     font-family: "Roboto";
+    src: url("../src/assets/fonts/Roboto.ttf");;
+}
 
 @theme {
     --font-audiowide: "Audiowide", sans-serif;
+    --color-graycustom: #f1f1f1;
+    --color-whitecustom: #ffffff;
+    --color-fontgray: #444444;
+    --color-grayhover: #e9e9e9;
+    --color-graycustom2: #dddddd;
+    --color-graycustom3: #cccccc;
+    --color-grayclick: #a3a3a3;
+    --font-roboto: Roboto, sans-serif;
 }

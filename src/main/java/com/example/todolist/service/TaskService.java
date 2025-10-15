@@ -9,6 +9,7 @@ import com.example.todolist.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,12 @@ public class TaskService{
 
     @Transactional
     public Optional<TaskDTO> addTask(TaskDTO task) {
-        TaskEntity savedTask = taskRepository.save(taskMapper.toEntityNoId(task));
+        try {
+            TaskEntity savedTask = taskRepository.save(taskMapper.toEntityNoId(task));
+        } catch (DataAccessException ex) {
+            throw new ResourceNotFoundException("User not found with id)");
+
+
         if(savedTask != null) {
             return Optional.of(taskMapper.toDto(savedTask));
         }else {
@@ -38,7 +44,8 @@ public class TaskService{
 
     @Transactional
     public Optional<TaskDTO> updateTask(TaskDTO task) {
-        TaskEntity savedTask = taskRepository.save(taskMapper.toEntity(task));
+
+        TaskEntity savedTask = taskRepository.save(taskMapper.toEntity(task))
         return Optional.of(taskMapper.toDto(savedTask));
     }
 
@@ -69,8 +76,6 @@ public class TaskService{
         taskRepository.deleteAll();
     }
 
-    public UserEntity getUserIdFromContext() {
-        return (UserEntity) org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
+
 
 }

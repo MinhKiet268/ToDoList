@@ -1,6 +1,7 @@
 package com.example.todolist.dtoRequest;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -18,9 +19,11 @@ public class UserCreationRequestDTO {
     @NotBlank(message = "Fullname is mandatory")
     private String fullName;
 
+
     private String imageUrl;
 
     @NotBlank(message = "Email is mandatory")
+    @Email
     private String email;
 
     @NotBlank(message = "Gender is mandatory")
