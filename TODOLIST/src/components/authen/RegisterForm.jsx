@@ -62,12 +62,12 @@ const RegisterForm = () => {
 
             const response = await apiClient.post("http://localhost:8089/api/auth/signup",userDetail);
 
-            console.log(response);
-            const Message = {
-                "showPopup": true,
-                "message": "Successfully registered",
+            if (response.status >= 200 && response.status < 300) {
+
             }
-            history("/login", {state: Message});
+
+            console.log(response);
+            history("/login",{replace: true});
         } catch (error) {
             setResponseMessage(error.data);
         }

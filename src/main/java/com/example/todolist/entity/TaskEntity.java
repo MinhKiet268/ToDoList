@@ -19,8 +19,12 @@ public class TaskEntity {
     private long id;
     private String name;
     private String description;
+
+
     private Set<Long> tagIds;
+
     private long listId;
+
     private String status;
     private Date issueDate;
     private Date dueDate;

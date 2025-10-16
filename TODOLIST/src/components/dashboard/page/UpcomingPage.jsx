@@ -6,9 +6,21 @@ import {useState} from "react";
 
 const UpcomingPage = () => {
 
+    const item = {
+        name: "Task",
+        description: "",
+        status: "active",
+        due_date: "12/12/2025",
+        tag: ["tag1","tag2"],
+        tasklist: {
+            name: "Task",
+            color: "#fc030f"
+        },
+    }
+
     const [data, setData] = useState([
         {
-            
+
         }
     ]);
 
@@ -28,10 +40,9 @@ const UpcomingPage = () => {
                             </button>
                         </div>
                         <div className="flex flex-col h-screen w-full divide-y-2 divide-graycustom2">
+                            <Task props={item}></Task>
                             <Task></Task>
                             <Task></Task>
-                            <Task></Task>
-
                         </div>
 
                     </ul>

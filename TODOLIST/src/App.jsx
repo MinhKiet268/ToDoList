@@ -7,6 +7,7 @@ import AuthProvider from "./components/authen/AuthProvider.jsx";
 import ErrorProvider from "./components/errorhandler/ErrorProvider.jsx";
 import GlobalContext from "./components/context/GlobalContext.jsx";
 
+
 function App() {
 
   return (
@@ -19,7 +20,7 @@ function App() {
                       <Route path="/register" element={<RegisterForm/>} />
                       <Route path="/dashboard" element={
                           //<ProtectedRoute>
-                              <Dashboard />
+                          <Dashboard />
                           //</ProtectedRoute>
                       }/>
                   </Routes>

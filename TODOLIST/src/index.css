@@ -6,6 +6,10 @@
      font-family: "Roboto";
     src: url("../src/assets/fonts/Roboto.ttf");;
 }
+@font-face {
+    font-family: "Funnel";
+    src: url("../src/assets/fonts/Funnel.ttf");;
+}
 
 
 @theme {
@@ -18,4 +22,5 @@
     --color-graycustom3: #cccccc;
     --color-grayclick: #a3a3a3;
     --font-roboto: Roboto, sans-serif;
+    --font-funnel: Funnel, sans-serif;
 }
