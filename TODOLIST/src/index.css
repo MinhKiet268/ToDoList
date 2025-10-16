@@ -7,6 +7,7 @@
     src: url("../src/assets/fonts/Roboto.ttf");;
 }
 
+
 @theme {
     --font-audiowide: "Audiowide", sans-serif;
     --color-graycustom: #f1f1f1;

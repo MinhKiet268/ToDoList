@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +19,8 @@ public class TaskEntity {
     private long id;
     private String name;
     private String description;
-    private String subject;
+    private Set<Long> tagIds;
+    private long listId;
     private String status;
     private Date issueDate;
     private Date dueDate;

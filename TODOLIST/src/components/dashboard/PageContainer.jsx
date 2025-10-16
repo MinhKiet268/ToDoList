@@ -45,7 +45,7 @@ const PageContainer = () => {
 
 
     return (
-        <div className=" flex flex-col flex-1 space-y-3 h-screen">
+        <div className=" flex flex-col flex-1 space-y-3 h-screen min-w-100">
             <div className="flex flex-col h-full transition-all duration-300">
                 <h1 className="text-5xl font-extrabold pl-5 font-roboto text-black mb-8">{currentPage}</h1>
                 {

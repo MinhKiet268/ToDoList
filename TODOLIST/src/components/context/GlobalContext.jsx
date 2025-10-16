@@ -8,7 +8,11 @@ const GlobalContext = ({ children }) => {
 
     const [currentPage, setCurrentPage] = useState("Upcoming");
 
-    const value = {currentPage,setCurrentPage};
+    const [isCustomized, setIsCustomized] = useState(true);
+
+    const [enablePopup, setEnablePopup] = useState(null);
+
+    const value = {currentPage,setCurrentPage, isCustomized, setIsCustomized, enablePopup, setEnablePopup};
 
     return (<GlobalContextObject.Provider value={value}>
         { children }
