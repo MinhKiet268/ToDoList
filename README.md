@@ -1,4 +1,4 @@
-# ToDoList# ToDoList Full Stack Application
+# ToDoList Full Stack Application
 
 A full-featured ToDo List app with a Java Spring Boot backend and a modern ReactJS frontend (Vite + TailwindCSS).
 
