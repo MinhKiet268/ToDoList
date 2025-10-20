@@ -1,11 +1,32 @@
 import { IoCloseOutline } from "react-icons/io5";
-import {useGlobalContext} from "../../context/GlobalContext.jsx";
+import TaskCustomizePage from "./TaskCustomizePage.jsx";
+import TagCustomizePage from "./TagCustomizePage.jsx";
+import ListCustomizePage from "./ListCustomizePage.jsx";
 
-const PopupContainer = () => {
-    const {setEnablePopup} = useGlobalContext();
+
+const PopupContainer = ({currentPopupPage, setEnablePopup,currentList, currentTask, currentTag, tagMap, listData}) => {
 
     const disablePopup = () => {
         setEnablePopup(false);
+    }
+
+
+
+    const renderPage = () => {
+        switch (currentPopupPage) {
+            case 'Task':
+                return (
+                    <TaskCustomizePage currentTask={currentTask} tagMap={tagMap} listData={listData}></TaskCustomizePage>
+                )
+            case 'Tag':
+                return (
+                    <TagCustomizePage currentTag={currentTag} ></TagCustomizePage>
+                )
+            case 'List':
+                return (
+                    <ListCustomizePage currentList={currentList}  ></ListCustomizePage>
+                )
+        }
     }
 
     return (
@@ -18,7 +39,8 @@ const PopupContainer = () => {
                 </div>
 
                 <div className="flex flex-col h-full ">
-
+                    {/*<TaskCustomizePage></TaskCustomizePage>*/}
+                    {renderPage()}
                 </div>
             </div>
         </div>

@@ -86,18 +86,18 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<String> refreshToken(HttpServletRequest request, HttpServletResponse response) {
 
-        UUID RefreshToken = UUID.fromString(cookieUtil.getCookieFromRequest(request,refreshTokenName));
+        UUID refreshToken = UUID.fromString(cookieUtil.getCookieFromRequest(request,refreshTokenName));
 
-        if(refreshTokenService.isExpired(RefreshToken))
+        System.out.println(refreshToken);
+
+        if(refreshTokenService.isExpired(refreshToken))
         {
             cookieUtil.deletCookie(response, refreshTokenName, refreshTokenPath);
             cookieUtil.deletCookie(response, accessTokenName, accessTokenPath);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Refresh Token Expired. Please login again.");
         }
 
-        UserEntity user = refreshTokenService.findUserByRefreshToken(
-                UUID.fromString(cookieUtil.getCookieFromRequest(request,refreshTokenName))
-        );
+        UserEntity user = refreshTokenService.findUserByRefreshToken(refreshToken);
 
         cookieUtil.responseAccessTokenCookie(response, jwtUtil.generateToken(user));
 

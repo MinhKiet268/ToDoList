@@ -6,23 +6,23 @@ import TodayPage from "./page/TodayPage.jsx";
 import CalendarPage from "./page/CalendarPage.jsx";
 import {useGlobalContext} from "../context/GlobalContext.jsx";
 
-const PageContainer = () => {
-    const {currentPage} = useGlobalContext();
+const PageContainer = ({currentPage, setEnablePopup,setCurrentTask,setCurrentPopupPage, listMap, taskData}) => {
+
 
 
     const renderPage = (currentPage) => {
         switch (currentPage) {
             case 'Upcoming':
                 return (
-                    <UpcomingPage></UpcomingPage>
+                    <UpcomingPage setEnablePopup={setEnablePopup} setCurrentTask={setCurrentTask} setCurrentPopupPage={setCurrentPopupPage} listMap={listMap} taskData={taskData}></UpcomingPage>
                 )
             case 'Today':
                 return (
-                    <TodayPage></TodayPage>
+                    <TodayPage etEnablePopup={setEnablePopup} setCurrentTask={setCurrentTask} setCurrentPopupPage={setCurrentPopupPage} listMap={listMap}></TodayPage>
                 )
             case 'Calendar':
                 return (
-                    <CalendarPage></CalendarPage>
+                    <CalendarPage etEnablePopup={setEnablePopup} setCurrentTask={setCurrentTask} setCurrentPopupPage={setCurrentPopupPage} listMap={listMap}></CalendarPage>
                 )
         }
     }

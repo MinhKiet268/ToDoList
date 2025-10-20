@@ -81,6 +81,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(AccessTokenIsExpired.class)
+    public ResponseEntity<ErrorResponse> handleAccessTokenIsExpired(AccessTokenIsExpired ex, WebRequest request) {
+
+        ErrorResponse errorDetails = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
+
 
     @ExceptionHandler(DataBaseExecutionException.class)
     public ResponseEntity<ErrorResponse> handleDataBaseExecutionException(

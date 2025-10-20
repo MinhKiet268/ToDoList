@@ -6,6 +6,7 @@ import RegisterForm from "./components/authen/RegisterForm.jsx";
 import AuthProvider from "./components/authen/AuthProvider.jsx";
 import ErrorProvider from "./components/errorhandler/ErrorProvider.jsx";
 import GlobalContext from "./components/context/GlobalContext.jsx";
+import NotFound from "./utils/NotFound.jsx";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <ErrorProvider>
               <AuthProvider>
                   <Routes>
+                      <Route path="*" element={<NotFound />} />
                       <Route path="/" element={<LoginForm/>} />
                       <Route path="/login" element={<LoginForm/>} />
                       <Route path="/register" element={<RegisterForm/>} />

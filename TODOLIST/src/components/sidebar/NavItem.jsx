@@ -1,11 +1,12 @@
 import {useGlobalContext} from "../context/GlobalContext.jsx";
 import {useEffect, useState} from "react";
 
-const NavItem = ({label, IconComponent, isActived, setActivedTab, activedTab}) => {
-    const {currentPage,setCurrentPage} = useGlobalContext();
+const NavItem = ({label, IconComponent, isActived, setActivedTab, activedTab, setCurrentPage, currentPage}) => {
+    //const {currentPage,setCurrentPage} = useGlobalContext();
 
     const onClickEvent = () => {
         setCurrentPage(label);
+        console.log(label);
     }
 
     const containerClassName = "flex flex-1 justify-between p-2  items-center rounded-md bg-graycustom3"
@@ -17,7 +18,7 @@ const NavItem = ({label, IconComponent, isActived, setActivedTab, activedTab}) =
                 containerClassName
                 : " group flex flex-1 justify-between p-2  items-center rounded-md focus:bg-graycustom2 hover:bg-graycustom2 bg-graycustom"}>
                 <div className="flex flex-1 items-center space-x-2">
-                    <IconComponent></IconComponent>
+                    {}<IconComponent></IconComponent>
                     <p>
                         {label}
                     </p>

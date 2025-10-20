@@ -44,8 +44,11 @@ public class UserEntity implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<RoleEntity> roles = new HashSet<>(); // 0: user, 1: admin
+    private Set<RoleEntity> roles = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Set<RefreshToken> refreshToken;
 
     @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -53,11 +56,14 @@ public class UserEntity implements UserDetails {
 
     @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Set<RefreshToken> refreshToken;
+    private Set<ListEntity> lists;
+
+    @OneToMany(cascade = CascadeType.MERGE, fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Set<TagEntity> tags;
 
     @Column(nullable = false)
     private boolean isEnable = true;
-
 
     @Column(nullable = false)
     private boolean isNotLocked = true;
@@ -70,6 +76,9 @@ public class UserEntity implements UserDetails {
 
     @Column(nullable = false)
     private boolean isAccountNonExpired = true;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 
     // UserDetails interface methods
 

@@ -34,6 +34,14 @@ public class CustomUserService implements UserDetailsService {
                 .orElseThrow( () -> new ResourceNotFoundException("User not found with username: " + username));
     }
 
+    public UserEntity getReferenceById(long id) {
+        try {
+            return userRepository.getReferenceById(id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        }
+    }
+
     public UserEntity loadUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("User not found with id: " + id));
@@ -108,8 +116,5 @@ public class CustomUserService implements UserDetailsService {
         }
     }
 
-    public UserEntity getUserIdFromContext() {
-        return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 
 }

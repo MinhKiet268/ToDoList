@@ -19,12 +19,6 @@ public class TaskEntity {
     private long id;
     private String name;
     private String description;
-
-
-    private Set<Long> tagIds;
-
-    private long listId;
-
     private String status;
     private Date issueDate;
     private Date dueDate;
@@ -34,6 +28,16 @@ public class TaskEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "list_id")
+    private ListEntity list;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( name = "task_tags",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<TagEntity> tags;
 
 
 }

@@ -6,7 +6,7 @@ import {useState} from "react";
 import {useGlobalContext} from "../context/GlobalContext.jsx";
 
 
-const Sidebar = () => {
+const Sidebar = ({setCurrentPage, currentPage}) => {
     const history = useNavigate();
     const {logout} = useAuth();
 
@@ -34,7 +34,7 @@ const Sidebar = () => {
                         </div>
                     </div>
                     <div className="h-full space-y-3  ">
-                        <ListNavItem title="Tasks"></ListNavItem>
+                        <ListNavItem title="Tasks" setCurrentPage={setCurrentPage} currentPage={currentPage}></ListNavItem>
                     </div>
                     <div className=" group flex justify-center w-full rounded-md h-15 bg-graycustom2 hover:bg-grayclick">
                         <button className=" group-hover:text-white" onClick={logoutHandler}>

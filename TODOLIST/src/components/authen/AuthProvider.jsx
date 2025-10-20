@@ -1,5 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import apiClient from "../../utils/apiClient.jsx";
+import apiClient, {setupApiInterceptor} from "../../utils/apiClient.jsx";
+import {useError} from "../errorhandler/ErrorProvider.jsx";
 
 
 
@@ -7,10 +8,17 @@ const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext)
 
+
+
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const {setError} = useError()
+
+    useEffect(() => {
+        setupApiInterceptor(refreshToken,logout);
+    })
 
     useEffect(() => {
         if (localStorage.getItem("isAuthenticated")) {
@@ -19,6 +27,18 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     },[])
+
+    const refreshToken = async () => {
+        try {
+            await apiClient("/api/auth/refresh", {});
+        } catch (error) {
+            if(error.response.status === 401) {
+                setError("Refresh token expired");
+            }
+            logout();
+        }
+
+    }
 
     const login = async (username, password) => {
         setLoading(true);
@@ -73,7 +93,7 @@ const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{user,loading, setLoading,isAuthenticated,login,logout}}>
+        <AuthContext.Provider value={{user,loading, setLoading,isAuthenticated,login,logout,refreshToken}}>
             {children}
         </AuthContext.Provider>
     );

@@ -5,13 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDTO {
-    private Long id;
+    private long id;
     private String name;
     private String description;
-    private String priority;
+    private String status;
+    private Date dueDate;
+    private long listId;
+    private Set<Long> tagIds;
 
 }

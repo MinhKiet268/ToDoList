@@ -5,12 +5,11 @@ import {useAuth} from "./AuthProvider.jsx";
 
 
 const LoginForm = () => {
-    const {login, loading} = useAuth();
+    const {login} = useAuth();
     const [userDetail, setUserDetail] = useState( {
         username: "",
         password: "",
     });
-    const [error, setError] = useState('');
     const history = useNavigate();
 
     useEffect(() => {

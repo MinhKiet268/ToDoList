@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping ("api/app")
+@RequestMapping ("api/app/task")
 @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')") // you can use hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') if your roles are prefixed with 'ROLE_'
 public class ToDoListController {
     private TaskService taskService;
@@ -25,14 +25,12 @@ public class ToDoListController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public ResponseEntity<TaskDTO> Add(@RequestBody TaskDTO task) {
 
-        Optional<TaskDTO> returnTask = taskService.addTask(task);
-        if (!returnTask.isEmpty()) {
-            return new ResponseEntity<>(returnTask.get(), HttpStatus.CREATED);
-        }
-        throw new InvalidInputException("Task could not be added");
+        TaskDTO returnTask = taskService.save(task);
+
+        return new ResponseEntity<>(returnTask, HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
@@ -41,8 +39,8 @@ public class ToDoListController {
     }
 
     @GetMapping("/get/{id}")
-    public Optional<TaskDTO> getById(@PathVariable Long id) {
-        Optional<TaskDTO> returnTask = taskService.getTaskById(id);
+    public TaskDTO getById(@PathVariable long taskId) {
+        TaskDTO returnTask = taskService.getTaskById(taskId);
         return returnTask;
     }
 

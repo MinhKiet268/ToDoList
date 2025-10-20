@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import {useAuth} from "../components/authen/AuthProvider.jsx";
+import {useError} from "../components/errorhandler/ErrorProvider.jsx";
 
 const BASE_URL = "http://localhost:8089";
 
@@ -13,18 +14,37 @@ const apiClient = axios.create({
     },
 });
 
-// exception handler for api call
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Example: If a 401 (Unauthorized) is received, you could redirect the user to the login page.
-        if (error.response && error.response.status === 401) {
-            console.error("401 Unauthorized: Session may have expired.");
-            // window.location.href = '/login'; // Uncomment this line in a real app
-        }
+let onLogout;
+let onRefresh;
 
-        return Promise.reject(error);
-    }
-);
+export const setupApiInterceptor = (refreshFunc,logoutFunc) => {
+    onLogout = logoutFunc;
+    onRefresh = refreshFunc;
+    apiClient.interceptors.response.use(
+        //on success
+        (response) => response,
+
+        //on denied
+        async (error) => {
+            const originalRequest = error.config;
+            // Example: If a 401 (Unauthorized) is received, you could redirect the user to the login page.
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+
+                try{
+                    refreshFunc();
+                    return apiClient(originalRequest)
+                }catch(error) {
+                    console.error(error);
+                    logoutFunc();
+                }
+                // window.location.href = '/login'; // Uncomment this line in a real app
+            }
+            return Promise.reject(error);
+        }
+    );
+}
+// exception handler for api call
+
 
 export default apiClient;

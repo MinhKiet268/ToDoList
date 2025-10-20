@@ -3,6 +3,7 @@ package com.example.todolist.config;
 
 import com.example.todolist.entity.RoleEntity;
 import com.example.todolist.entity.UserEntity;
+import com.example.todolist.exception.AccessTokenIsExpired;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -74,6 +75,7 @@ public class JwtUtil {
             System.out.println("Invalid JWT token: " + e.getMessage());
         } catch (ExpiredJwtException e) {
             System.out.println("JWT token is expired: " + e.getMessage());
+            throw new AccessTokenIsExpired("TOKEN IS EXPIRED");
         } catch (UnsupportedJwtException e) {
             System.out.println("JWT token is unsupported: " + e.getMessage());
         } catch (IllegalArgumentException e) {
