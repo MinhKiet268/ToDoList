@@ -2,6 +2,17 @@
 
 A full-featured ToDo List app with a Java Spring Boot backend and a modern ReactJS frontend (Vite + TailwindCSS).
 
+
+## Requirements
+- Before setting up the project, ensure you have the following installed and configured:
+- Java 21
+- Maven
+- Node.js and npm
+- Microsoft SQL Server (running and accessible)
+- Update the database connection settings in src/main/resources/application.properties to match your MS SQL Server instance (e.g., URL, username, password)
+- (Optional) Configure environment variables as needed for development and production
+
+
 ## Features
 - User authentication and management
 - Create, update, delete, and organize tasks
